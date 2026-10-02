@@ -1,0 +1,179 @@
+/* ===== CORES PRINCIPAIS ===== */
+:root {
+  --azul-escuro: #1e3a8a;      /* cor principal */
+  --azul-claro: #e0ecff;       /* cor secundária */
+  --cinza-texto: #374151;
+  --cinza-borda: #d1d5db;
+  --branco: #ffffff;
+  --verde-bom: #166534;
+  --amarelo-atencao: #b45309;
+  --cinza-neutro: #6b7280;
+}
+
+/* ===== RESET BÁSICO ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f9fafb;
+  color: var(--cinza-texto);
+  line-height: 1.5;
+}
+
+/* ===== CABEÇALHO ===== */
+.cabecalho {
+  background-color: var(--azul-escuro);
+  color: var(--branco);
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.cabecalho h1 {
+  font-size: 1.8rem;
+  margin-bottom: 6px;
+}
+
+.subtitulo {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+/* ===== CARDS DE RESUMO ===== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.card {
+  background-color: var(--branco);
+  border: 1px solid var(--azul-claro);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(30, 58, 138, 0.08);
+}
+
+.card .icone {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.card .titulo-card {
+  font-size: 0.85rem;
+  color: var(--cinza-neutro);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.card .valor-card {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--azul-escuro);
+}
+
+/* ===== TABELA ===== */
+.tabela-area h2 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: var(--azul-escuro);
+}
+
+/* wrapper permite rolar no celular */
+.tabela-wrapper {
+  overflow-x: auto;
+  background-color: var(--branco);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(30, 58, 138, 0.08);
+}
+
+table.boletim {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px; /* garante boa leitura no desktop */
+}
+
+table.boletim th,
+table.boletim td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid var(--cinza-borda);
+  font-size: 0.9rem;
+}
+
+table.boletim th {
+  background-color: var(--azul-claro);
+  color: var(--azul-escuro);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+table.boletim td:first-child,
+table.boletim th:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+table.boletim tr:last-child td {
+  border-bottom: none;
+}
+
+table.boletim tr:nth-child(even) td {
+  background-color: #fbfcff;
+}
+
+/* cores de situação */
+.situacao-bom {
+  color: var(--verde-bom);
+  font-weight: 600;
+}
+
+.situacao-atencao {
+  color: var(--amarelo-atencao);
+  font-weight: 600;
+}
+
+.situacao-neutra {
+  color: var(--cinza-neutro);
+  font-style: italic;
+}
+
+/* ===== RODAPÉ ===== */
+.rodape {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.8rem;
+  color: var(--cinza-neutro);
+  border-top: 1px solid var(--cinza-borda);
+}
+
+/* ===== AJUSTES PARA CELULAR ===== */
+@media (max-width: 600px) {
+  .cabecalho h1 {
+    font-size: 1.4rem;
+  }
+
+  .card .valor-card {
+    font-size: 1.25rem;
+  }
+
+  table.boletim th,
+  table.boletim td {
+    padding: 10px 8px;
+    font-size: 0.82rem;
+  }
+}
