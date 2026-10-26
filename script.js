@@ -34,7 +34,6 @@ const disciplinas = [
 const MEDIA_MINIMA = 6.0;
 
 // Frequência FICTÍCIA apenas para demonstração.
-// No futuro isso será calculado de outra forma.
 const FREQUENCIA_DEMONSTRATIVA = 92;
 
 // ======================================================
@@ -46,41 +45,32 @@ let modoEdicao = false;
 
 // ======================================================
 // FUNÇÃO: normalizarNota(valor)
-// Converte qualquer valor recebido para a escala 0–10.
-// Retorna null quando a nota ainda não foi lançada.
 // ======================================================
 function normalizarNota(valor) {
-  // Vazio, null ou undefined = ainda não lançada
   if (valor === null || valor === undefined || valor === "") {
     return null;
   }
 
-  // Se for texto, troca vírgula por ponto
   let numero = typeof valor === "string" ? valor.replace(",", ".") : valor;
   numero = Number(numero);
 
-  // Se não for número válido, retorna null
   if (isNaN(numero)) {
     return null;
   }
 
-  // 0 a 10: permanece
   if (numero >= 0 && numero <= 10) {
     return numero;
   }
 
-  // Maior que 10 e até 100: divide por 10
   if (numero > 10 && numero <= 100) {
     return numero / 10;
   }
 
-  // Fora das regras: inválido
   return null;
 }
 
 // ======================================================
 // FUNÇÃO: formatarNota(nota)
-// Mostra a nota com 1 casa decimal ou "—" se for null.
 // ======================================================
 function formatarNota(nota) {
   if (nota === null) return "—";
@@ -89,8 +79,6 @@ function formatarNota(nota) {
 
 // ======================================================
 // FUNÇÃO: calcularMedia(notas)
-// Média apenas das notas válidas (ignora null).
-// Se não houver nenhuma válida, retorna null.
 // ======================================================
 function calcularMedia(notas) {
   const validas = notas.filter((n) => n !== null);
@@ -102,7 +90,6 @@ function calcularMedia(notas) {
 
 // ======================================================
 // FUNÇÃO: somarFaltas(lista)
-// Soma os valores de um array de faltas.
 // ======================================================
 function somarFaltas(lista) {
   return lista.reduce((acc, n) => acc + n, 0);
@@ -110,10 +97,6 @@ function somarFaltas(lista) {
 
 // ======================================================
 // FUNÇÃO: definirSituacao(media)
-// Regras:
-//   media >= 6  → "Bom desempenho"
-//   media < 6   → "Atenção"
-//   media null  → "Nota ainda não disponível"
 // ======================================================
 function definirSituacao(media) {
   if (media === null) return "Nota ainda não disponível";
@@ -123,10 +106,8 @@ function definirSituacao(media) {
 
 // ======================================================
 // FUNÇÃO: criarLinhaTabela(item)
-// Monta o HTML de uma linha <tr> para a tabela.
 // ======================================================
 function criarLinhaTabela(item) {
-  // Normaliza as três notas
   const n1 = normalizarNota(item.tri1);
   const n2 = normalizarNota(item.tri2);
   const n3 = normalizarNota(item.tri3);
@@ -135,18 +116,15 @@ function criarLinhaTabela(item) {
   const faltas = somarFaltas(item.faltas);
   const situacao = definirSituacao(media);
 
-  // Classe CSS para colorir a situação
   let classe = "situacao-neutra";
   if (situacao === "Bom desempenho") classe = "situacao-bom";
   if (situacao === "Atenção") classe = "situacao-atencao";
 
-  // Texto de notas ausentes
   const textoN1 = n1 === null ? "Ainda não lançada" : formatarNota(n1);
   const textoN2 = n2 === null ? "Ainda não lançada" : formatarNota(n2);
   const textoN3 = n3 === null ? "Ainda não lançada" : formatarNota(n3);
   const textoMedia = media === null ? "Ainda não lançada" : formatarNota(media);
 
-  // Cria a linha usando DOM seguro (textContent)
   const tr = document.createElement("tr");
 
   const tdDisciplina = document.createElement("td");
@@ -183,13 +161,11 @@ function criarLinhaTabela(item) {
 
 // ======================================================
 // FUNÇÃO: preencherTabela()
-// Limpa o <tbody> e insere as linhas atualizadas.
 // ======================================================
 function preencherTabela() {
   const corpo = document.getElementById("corpo-tabela");
   if (!corpo) return;
 
-  // Limpa antes de reconstruir (evita duplicação)
   corpo.innerHTML = "";
 
   if (!dadosAtuais || !Array.isArray(dadosAtuais.disciplinas)) {
@@ -203,7 +179,6 @@ function preencherTabela() {
 
 // ======================================================
 // FUNÇÃO: criarCard(icone, titulo, valor)
-// Gera o HTML de um card de resumo.
 // ======================================================
 function criarCard(icone, titulo, valor) {
   const card = document.createElement("div");
@@ -229,13 +204,11 @@ function criarCard(icone, titulo, valor) {
 
 // ======================================================
 // FUNÇÃO: preencherCards()
-// Calcula os resumos e monta os cards.
 // ======================================================
 function preencherCards() {
   const area = document.getElementById("cards");
   if (!area) return;
 
-  // Limpa antes de reconstruir (evita duplicação)
   area.innerHTML = "";
 
   if (!dadosAtuais || !Array.isArray(dadosAtuais.disciplinas)) {
@@ -280,7 +253,6 @@ function preencherCards() {
 
 // ======================================================
 // FUNÇÃO: clonarDados(dados)
-// Cópia profunda simples para não alterar os dados originais.
 // ======================================================
 function clonarDados(dados) {
   return JSON.parse(JSON.stringify(dados));
@@ -288,7 +260,6 @@ function clonarDados(dados) {
 
 // ======================================================
 // FUNÇÃO: renderizarBoletim()
-// Renderiza tabela e cards com os dados atuais.
 // ======================================================
 function renderizarBoletim() {
   preencherCards();
@@ -296,8 +267,7 @@ function renderizarBoletim() {
 }
 
 // ======================================================
-// FUNÇÃO: mostrarMensagemAcesso(texto, tipo)
-// tipo: "erro" | "ok" | ""
+// FUNÇÃO: mostrarMensagemAcesso
 // ======================================================
 function mostrarMensagemAcesso(texto, tipo) {
   const el = document.getElementById("mensagem-acesso");
@@ -307,7 +277,7 @@ function mostrarMensagemAcesso(texto, tipo) {
 }
 
 // ======================================================
-// FUNÇÃO: mostrarMensagemEdicao(texto, tipo)
+// FUNÇÃO: mostrarMensagemEdicao
 // ======================================================
 function mostrarMensagemEdicao(texto, tipo) {
   const el = document.getElementById("mensagem-edicao");
@@ -318,7 +288,6 @@ function mostrarMensagemEdicao(texto, tipo) {
 
 // ======================================================
 // FUNÇÃO: entrar()
-// Faz POST /abrir e carrega os dados.
 // ======================================================
 async function entrar() {
   const campoPin = document.getElementById("campo-pin");
@@ -366,28 +335,21 @@ async function entrar() {
 
     const json = await resposta.json();
 
-    // Guarda o PIN apenas em memória durante a sessão
     pinSessao = pinDigitado;
 
-    // Decide de onde vêm os dados
     if (json && json.dados !== null && json.dados !== undefined) {
-      // Dados da API têm prioridade absoluta
       dadosAtuais = json.dados;
     } else {
-      // Sem dados salvos: usa os dados fictícios do projeto
       dadosAtuais = { disciplinas: clonarDados(disciplinas) };
     }
 
-    // Limpa o campo do PIN após login bem-sucedido
     campoPin.value = "";
 
-    // Mostra a área do boletim e esconde a tela de acesso
     const acesso = document.getElementById("acesso");
     const areaBoletim = document.getElementById("area-boletim");
     if (acesso) acesso.classList.add("escondido");
     if (areaBoletim) areaBoletim.classList.remove("escondido");
 
-    // Renderiza
     renderizarBoletim();
     atualizarGraficos();
   } catch (erro) {
@@ -399,7 +361,6 @@ async function entrar() {
 
 // ======================================================
 // FUNÇÃO: abrirEdicao()
-// Monta os campos de edição a partir dos dados atuais.
 // ======================================================
 function abrirEdicao() {
   if (!dadosAtuais || !Array.isArray(dadosAtuais.disciplinas)) return;
@@ -419,7 +380,6 @@ function abrirEdicao() {
     nome.textContent = item.disciplina;
     bloco.appendChild(nome);
 
-    // Notas
     const linhaNotas = document.createElement("div");
     linhaNotas.className = "linha-edicao";
 
@@ -447,7 +407,6 @@ function abrirEdicao() {
 
     bloco.appendChild(linhaNotas);
 
-    // Faltas
     const linhaFaltas = document.createElement("div");
     linhaFaltas.className = "linha-edicao";
     linhaFaltas.style.marginTop = "10px";
@@ -496,8 +455,6 @@ function fecharEdicao() {
 
 // ======================================================
 // FUNÇÃO: validarNotaEdicao(valor)
-// Retorna { valido, valor } ou { valido: false }
-// Aceita: vazio, número 0–10 (com ponto ou vírgula)
 // ======================================================
 function validarNotaEdicao(valor) {
   const texto = String(valor).trim();
@@ -506,7 +463,6 @@ function validarNotaEdicao(valor) {
     return { valido: true, valor: null };
   }
 
-  // Substitui vírgula por ponto
   const normalizado = texto.replace(",", ".");
   const numero = Number(normalizado);
 
@@ -523,7 +479,6 @@ function validarNotaEdicao(valor) {
 
 // ======================================================
 // FUNÇÃO: validarFaltaEdicao(valor)
-// Aceita: número inteiro >= 0
 // ======================================================
 function validarFaltaEdicao(valor) {
   const texto = String(valor).trim();
@@ -532,7 +487,6 @@ function validarFaltaEdicao(valor) {
     return { valido: false };
   }
 
-  // Só dígitos (inteiro não negativo)
   if (!/^\d+$/.test(texto)) {
     return { valido: false };
   }
@@ -548,7 +502,6 @@ function validarFaltaEdicao(valor) {
 
 // ======================================================
 // FUNÇÃO: salvar()
-// Valida todos os campos, monta o payload e envia para a API.
 // ======================================================
 async function salvar() {
   if (!dadosAtuais || !Array.isArray(dadosAtuais.disciplinas)) return;
@@ -560,10 +513,8 @@ async function salvar() {
   const inputs = document.querySelectorAll("#campos-edicao input");
   let temErro = false;
 
-  // Limpa marcações antigas
   inputs.forEach((input) => input.classList.remove("invalido"));
 
-  // Cópia para montar o novo conjunto de dados
   const novosDados = clonarDados(dadosAtuais);
 
   inputs.forEach((input) => {
@@ -632,14 +583,12 @@ async function salvar() {
       return;
     }
 
-    // Sucesso: adota os novos dados e renderiza novamente
     dadosAtuais = novosDados;
     renderizarBoletim();
     atualizarGraficos();
 
     mostrarMensagemEdicao("Dados salvos com sucesso.", "ok");
 
-    // Fecha a edição apenas após sucesso
     fecharEdicao();
   } catch (erro) {
     mostrarMensagemEdicao("Não foi possível salvar. Tente novamente.", "erro");
@@ -649,31 +598,116 @@ async function salvar() {
 }
 
 // ======================================================
-// CAMADA DE GRÁFICOS (somente leitura)
-// Não altera dados, apenas lê dadosAtuais e desenha.
+// CAMADA DE GRÁFICOS — PREMIUM (somente leitura)
 // ======================================================
 let graficoMedias = null;
 let graficoEvolucao = null;
 let graficoFaltas = null;
 
-// Referência interna de risco (NÃO exibir na interface)
+// Referência interna (NUNCA exibida na interface)
 const REFERENCIA_INTERNA_FALTAS = 350;
 
-// Paleta compatível com o tema do projeto
+// Paleta premium
 const CORES_GRAFICOS = {
-  azulEscuro: "#1e3a8a",
-  azulClaro: "#e0ecff",
-  bordaGrade: "#e5e7eb",
+  azul: "#1e3a8a",
+  azulMedio: "#2563eb",
+  azulClaro: "#60a5fa",
+  azulMuitoClaro: "#93c5fd",
+  azulGradienteInicio: "#1e3a8a",
+  azulGradienteFim: "#3b82f6",
+  verdeGradienteInicio: "#15803d",
+  verdeGradienteFim: "#22c55e",
+  vermelhoGradienteInicio: "#dc2626",
+  vermelhoGradienteFim: "#f97316",
+  grade: "rgba(30, 58, 138, 0.08)",
   texto: "#374151",
-  verdeBom: "#166534",
-  amareloAtencao: "#b45309",
-  vermelhoCritico: "#b91c1c"
+  textoSuave: "#6b7280"
 };
 
 // ------------------------------------------------------
-// Calcula (sem mutar) a média por disciplina.
-// Retorna { labels: [...], valores: [...] }
-// null não vira zero.
+// Gera um gradiente vertical para barras
+// ------------------------------------------------------
+function criarGradienteVertical(ctx, area, corInicio, corFim) {
+  const g = ctx.createLinearGradient(0, area.bottom, 0, area.top);
+  g.addColorStop(0, corInicio);
+  g.addColorStop(1, corFim);
+  return g;
+}
+
+// ------------------------------------------------------
+// Plugin customizado: desenha o valor ao lado de cada barra
+// ------------------------------------------------------
+const pluginValorBarra = {
+  id: "pluginValorBarra",
+  afterDatasetsDraw(chart, args, opts) {
+    const { ctx, data } = chart;
+    const meta = chart.getDatasetMeta(0);
+    if (!meta || !meta.data) return;
+
+    ctx.save();
+    ctx.font = "600 11px Arial, Helvetica, sans-serif";
+    ctx.textBaseline = "middle";
+
+    meta.data.forEach((elemento, i) => {
+      const valor = data.datasets[0].data[i];
+      if (valor === null || valor === undefined) return;
+
+      const texto = Number(valor).toFixed(1).replace(".", ",");
+      const isHorizontal = chart.options.indexAxis === "y";
+
+      ctx.fillStyle = opts.cor || CORES_GRAFICOS.azul;
+
+      if (isHorizontal) {
+        ctx.textAlign = "left";
+        ctx.fillText(texto, elemento.x + 8, elemento.y);
+      } else {
+        ctx.textAlign = "center";
+        ctx.fillText(texto, elemento.x, elemento.y - 10);
+      }
+    });
+
+    ctx.restore();
+  }
+};
+
+// ------------------------------------------------------
+// Tooltip padrão premium
+// ------------------------------------------------------
+function tooltipPremium() {
+  return {
+    backgroundColor: "rgba(15, 23, 42, 0.94)",
+    titleColor: "#ffffff",
+    bodyColor: "#e5e7eb",
+    titleFont: { size: 12, weight: "700" },
+    bodyFont: { size: 12 },
+    padding: 10,
+    cornerRadius: 8,
+    borderColor: "rgba(96, 165, 250, 0.4)",
+    borderWidth: 1,
+    displayColors: false
+  };
+}
+
+// ------------------------------------------------------
+// Escalas base premium
+// ------------------------------------------------------
+function escalasBase() {
+  return {
+    x: {
+      ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 } },
+      grid: { color: CORES_GRAFICOS.grade, drawBorder: false },
+      border: { display: false }
+    },
+    y: {
+      ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 } },
+      grid: { color: CORES_GRAFICOS.grade, drawBorder: false },
+      border: { display: false }
+    }
+  };
+}
+
+// ------------------------------------------------------
+// Cálculos (somente leitura)
 // ------------------------------------------------------
 function calcularDadosMediasPorDisciplina() {
   const labels = [];
@@ -696,11 +730,6 @@ function calcularDadosMediasPorDisciplina() {
   return { labels, valores };
 }
 
-// ------------------------------------------------------
-// Calcula (sem mutar) a evolução da média geral por trimestre.
-// Notas ausentes não entram na média.
-// Trimestre sem notas = null.
-// ------------------------------------------------------
 function calcularDadosEvolucaoGeral() {
   const labels = ["1º Tri", "2º Tri", "3º Tri"];
   const valores = [null, null, null];
@@ -727,10 +756,6 @@ function calcularDadosEvolucaoGeral() {
   return { labels, valores };
 }
 
-// ------------------------------------------------------
-// Calcula (sem mutar) faltas somadas por trimestre
-// e o total acumulado (interno).
-// ------------------------------------------------------
 function calcularDadosFaltasPorTrimestre() {
   const labels = ["1º Tri", "2º Tri", "3º Tri"];
   const valores = [0, 0, 0];
@@ -755,38 +780,7 @@ function calcularDadosFaltasPorTrimestre() {
 }
 
 // ------------------------------------------------------
-// Configurações padrão de legibilidade do Chart.js
-// ------------------------------------------------------
-function opcoesBaseChart() {
-  return {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: { duration: 300 },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        backgroundColor: "rgba(30, 58, 138, 0.92)",
-        titleColor: "#ffffff",
-        bodyColor: "#ffffff",
-        padding: 8,
-        cornerRadius: 6
-      }
-    },
-    scales: {
-      x: {
-        ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 } },
-        grid: { color: CORES_GRAFICOS.bordaGrade }
-      },
-      y: {
-        ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 } },
-        grid: { color: CORES_GRAFICOS.bordaGrade }
-      }
-    }
-  };
-}
-
-// ------------------------------------------------------
-// GRÁFICO 1 — Média por disciplina (barras horizontais)
+// GRÁFICO 1 — Média por disciplina
 // ------------------------------------------------------
 function atualizarGraficoMedias() {
   const canvas = document.getElementById("graficoMediasDisciplinas");
@@ -798,35 +792,7 @@ function atualizarGraficoMedias() {
   }
 
   const { labels, valores } = calcularDadosMediasPorDisciplina();
-
-  const opcoes = opcoesBaseChart();
-  opcoes.indexAxis = "y";
-  opcoes.scales = {
-    x: {
-      min: 0,
-      max: 10,
-      ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 }, stepSize: 2 },
-      grid: { color: CORES_GRAFICOS.bordaGrade }
-    },
-    y: {
-      ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 }, autoSkip: false },
-      grid: { display: false }
-    }
-  };
-  opcoes.plugins.tooltip = {
-    backgroundColor: "rgba(30, 58, 138, 0.92)",
-    titleColor: "#ffffff",
-    bodyColor: "#ffffff",
-    padding: 8,
-    cornerRadius: 6,
-    callbacks: {
-      label: function (context) {
-        const v = context.parsed.x;
-        if (v === null || v === undefined) return "Ainda não lançada";
-        return v.toFixed(1).replace(".", ",");
-      }
-    }
-  };
+  const ctx = canvas.getContext("2d");
 
   graficoMedias = new Chart(canvas, {
     type: "bar",
@@ -835,20 +801,66 @@ function atualizarGraficoMedias() {
       datasets: [{
         label: "Média",
         data: valores,
-        backgroundColor: CORES_GRAFICOS.azulEscuro,
-        borderColor: CORES_GRAFICOS.azulEscuro,
-        borderWidth: 0,
-        borderRadius: 4,
-        barPercentage: 0.8,
-        categoryPercentage: 0.85
+        backgroundColor: (context) => {
+          const { chart } = context;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return CORES_GRAFICOS.azulMedio;
+          return criarGradienteVertical(
+            c,
+            chartArea,
+            CORES_GRAFICOS.azulGradienteInicio,
+            CORES_GRAFICOS.azulGradienteFim
+          );
+        },
+        borderColor: "rgba(30, 58, 138, 0.35)",
+        borderWidth: 1,
+        borderRadius: 6,
+        borderSkipped: false,
+        barPercentage: 0.78,
+        categoryPercentage: 0.86
       }]
     },
-    options: opcoes
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: "y",
+      animation: { duration: 400, easing: "easeOutQuart" },
+      layout: { padding: { right: 36, left: 4, top: 4, bottom: 4 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          ...tooltipPremium(),
+          callbacks: {
+            title: (items) => items[0].label,
+            label: (context) => {
+              const v = context.parsed.x;
+              if (v === null || v === undefined) return "Ainda não lançada";
+              return "Média: " + v.toFixed(1).replace(".", ",");
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          min: 0,
+          max: 10,
+          ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 }, stepSize: 2 },
+          grid: { color: CORES_GRAFICOS.grade, drawBorder: false },
+          border: { display: false }
+        },
+        y: {
+          ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 }, autoSkip: false },
+          grid: { display: false },
+          border: { display: false }
+        }
+      }
+    },
+    plugins: [pluginValorBarra]
   });
 }
 
 // ------------------------------------------------------
-// GRÁFICO 2 — Evolução da média geral (linha)
+// GRÁFICO 2 — Evolução da média geral
 // ------------------------------------------------------
 function atualizarGraficoEvolucao() {
   const canvas = document.getElementById("graficoEvolucaoTrimestres");
@@ -861,34 +873,6 @@ function atualizarGraficoEvolucao() {
 
   const { labels, valores } = calcularDadosEvolucaoGeral();
 
-  const opcoes = opcoesBaseChart();
-  opcoes.scales = {
-    x: {
-      ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 } },
-      grid: { display: false }
-    },
-    y: {
-      min: 0,
-      max: 10,
-      ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 }, stepSize: 2 },
-      grid: { color: CORES_GRAFICOS.bordaGrade }
-    }
-  };
-  opcoes.plugins.tooltip = {
-    backgroundColor: "rgba(30, 58, 138, 0.92)",
-    titleColor: "#ffffff",
-    bodyColor: "#ffffff",
-    padding: 8,
-    cornerRadius: 6,
-    callbacks: {
-      label: function (context) {
-        const v = context.parsed.y;
-        if (v === null || v === undefined) return "Ainda não lançada";
-        return "Média: " + v.toFixed(1).replace(".", ",");
-      }
-    }
-  };
-
   graficoEvolucao = new Chart(canvas, {
     type: "line",
     data: {
@@ -896,153 +880,55 @@ function atualizarGraficoEvolucao() {
       datasets: [{
         label: "Média geral",
         data: valores,
-        borderColor: CORES_GRAFICOS.azulEscuro,
-        backgroundColor: "rgba(30, 58, 138, 0.12)",
+        borderColor: CORES_GRAFICOS.azulMedio,
         borderWidth: 3,
-        pointRadius: 5,
-        pointBackgroundColor: CORES_GRAFICOS.azulEscuro,
-        pointBorderColor: "#ffffff",
-        pointBorderWidth: 2,
-        tension: 0.3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointBackgroundColor: "#ffffff",
+        pointBorderColor: CORES_GRAFICOS.azulMedio,
+        pointBorderWidth: 3,
+        pointHoverBackgroundColor: CORES_GRAFICOS.azulMedio,
+        pointHoverBorderColor: "#ffffff",
+        tension: 0.35,
         spanGaps: false,
-        fill: true
+        fill: true,
+        backgroundColor: (context) => {
+          const { chart } = context;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return "rgba(37, 99, 235, 0.12)";
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, "rgba(37, 99, 235, 0.28)");
+          g.addColorStop(1, "rgba(37, 99, 235, 0.02)");
+          return g;
+        }
       }]
     },
-    options: opcoes
-  });
-}
-
-// ------------------------------------------------------
-// GRÁFICO 3 — Faltas por trimestre (barras verticais)
-// Três barras separadas + badge "Perigo" interno.
-// ------------------------------------------------------
-function atualizarGraficoFaltas() {
-  const canvas = document.getElementById("graficoFaltasTrimestres");
-  if (!canvas || typeof Chart === "undefined") return;
-
-  if (graficoFaltas) {
-    graficoFaltas.destroy();
-    graficoFaltas = null;
-  }
-
-  const { labels, valores, totalFaltas } = calcularDadosFaltasPorTrimestre();
-
-  // Avaliação interna de risco (NÃO exibir a referência)
-  const emPerigo = totalFaltas >= REFERENCIA_INTERNA_FALTAS;
-
-  // Atualiza badge e destaque do card
-  const badge = document.getElementById("estadoFaltas");
-  const card = document.getElementById("cardGraficoFaltas");
-  if (badge) {
-    if (emPerigo) {
-      badge.classList.remove("escondido");
-    } else {
-      badge.classList.add("escondido");
-    }
-  }
-  if (card) {
-    if (emPerigo) {
-      card.classList.add("critico");
-    } else {
-      card.classList.remove("critico");
-    }
-  }
-
-  // Cor das barras: alerta apenas quando em perigo, mantendo legibilidade
-  const corBarras = emPerigo ? CORES_GRAFICOS.vermelhoCritico : CORES_GRAFICOS.azulEscuro;
-
-  const opcoes = opcoesBaseChart();
-  opcoes.scales = {
-    x: {
-      ticks: { color: CORES_GRAFICOS.texto, font: { size: 12 } },
-      grid: { display: false }
-    },
-    y: {
-      beginAtZero: true,
-      ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 }, precision: 0 },
-      grid: { color: CORES_GRAFICOS.bordaGrade }
-    }
-  };
-  opcoes.plugins.tooltip = {
-    backgroundColor: "rgba(30, 58, 138, 0.92)",
-    titleColor: "#ffffff",
-    bodyColor: "#ffffff",
-    padding: 8,
-    cornerRadius: 6,
-    callbacks: {
-      label: function (context) {
-        return context.parsed.y + " faltas";
-      }
-    }
-  };
-
-  graficoFaltas = new Chart(canvas, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Faltas",
-        data: valores,
-        backgroundColor: corBarras,
-        borderColor: corBarras,
-        borderWidth: 0,
-        borderRadius: 4,
-        barPercentage: 0.7,
-        categoryPercentage: 0.8
-      }]
-    },
-    options: opcoes
-  });
-}
-
-// ------------------------------------------------------
-// Atualiza todos os gráficos (somente leitura)
-// ------------------------------------------------------
-function atualizarGraficos() {
-  atualizarGraficoMedias();
-  atualizarGraficoEvolucao();
-  atualizarGraficoFaltas();
-}
-
-// ======================================================
-// INICIALIZAÇÃO
-// Roda quando a página terminar de carregar.
-// ======================================================
-document.addEventListener("DOMContentLoaded", () => {
-  // Botão entrar
-  const botaoEntrar = document.getElementById("botao-entrar");
-  if (botaoEntrar) botaoEntrar.addEventListener("click", entrar);
-
-  // Enter no campo PIN
-  const campoPin = document.getElementById("campo-pin");
-  if (campoPin) {
-    campoPin.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") entrar();
-    });
-  }
-
-  // Botão alterar dados
-  const botaoAlterar = document.getElementById("botao-alterar");
-  if (botaoAlterar) {
-    botaoAlterar.addEventListener("click", () => {
-      if (modoEdicao) {
-        fecharEdicao();
-      } else {
-        abrirEdicao();
-      }
-    });
-  }
-
-  // Botão salvar
-  const botaoSalvar = document.getElementById("botao-salvar");
-  if (botaoSalvar) botaoSalvar.addEventListener("click", salvar);
-
-  // Botão cancelar
-  const botaoCancelar = document.getElementById("botao-cancelar");
-  if (botaoCancelar) {
-    botaoCancelar.addEventListener("click", () => {
-      mostrarMensagemEdicao("", "");
-      fecharEdicao();
-    });
-  }
-});
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 450, easing: "easeOutQuart" },
+      layout: { padding: { top: 8, bottom: 4 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          ...tooltipPremium(),
+          callbacks: {
+            title: (items) => items[0].label,
+            label: (context) => {
+              const v = context.parsed.y;
+              if (v === null || v === undefined) return "Ainda não lançada";
+              return "Média: " + v.toFixed(1).replace(".", ",");
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: CORES_GRAFICOS.texto, font: { size: 12, weight: "600" } },
+          grid: { display: false },
+          border: { display: false }
+        },
+        y: {
+          min: 0,
+          max: 10,
+          ticks: { color: CORES_GRAFICOS.texto, font

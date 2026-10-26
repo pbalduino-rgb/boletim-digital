@@ -1,119 +1,47 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boletim Digital</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-
-  <!-- CABEÇALHO -->
-  <header class="cabecalho">
-    <h1>Boletim Digital</h1>
-    <p class="subtitulo">8º Ano — Turma 8C — Nº 22</p>
-  </header>
-
-  <main class="container">
-
-    <!-- TELA DE ACESSO POR PIN -->
-    <section class="acesso" id="acesso">
-      <h2>Acesso do Estudante</h2>
-      <p class="acesso-info">Turma <strong>8C</strong> — Número de chamada <strong>22</strong></p>
-      <div class="acesso-campo">
-        <label for="campo-pin">PIN</label>
-        <input type="password" id="campo-pin" maxlength="8" inputmode="numeric" autocomplete="off" placeholder="Digite seu PIN" />
-      </div>
-      <button id="botao-entrar" class="botao-entrar">Entrar</button>
-      <p id="mensagem-acesso" class="mensagem-acesso"></p>
-    </section>
-
-    <!-- ÁREA DO BOLETIM (escondida até o login) -->
-    <div id="area-boletim" class="area-boletim escondido">
-
-      <!-- CARDS DE RESUMO -->
-      <section class="cards" id="cards">
-        <!-- Os cards serão preenchidos pelo JavaScript -->
-      </section>
-
       <!-- ÁREA DE GRÁFICOS -->
       <section class="area-graficos" id="area-graficos">
 
         <article class="grafico-card">
-          <h2 class="grafico-titulo">Média por disciplina</h2>
+          <header class="grafico-header">
+            <div class="grafico-icone" aria-hidden="true">📊</div>
+            <div class="grafico-header-texto">
+              <h2 class="grafico-titulo">Média por disciplina</h2>
+              <p class="grafico-subtitulo">Desempenho atual em cada componente</p>
+            </div>
+          </header>
           <div class="grafico-container grafico-container-alto">
             <canvas id="graficoMediasDisciplinas"></canvas>
           </div>
         </article>
 
         <article class="grafico-card">
-          <h2 class="grafico-titulo">Evolução da média geral</h2>
+          <header class="grafico-header">
+            <div class="grafico-icone" aria-hidden="true">📈</div>
+            <div class="grafico-header-texto">
+              <h2 class="grafico-titulo">Evolução da média geral</h2>
+              <p class="grafico-subtitulo">Comparativo entre os três trimestres</p>
+            </div>
+          </header>
           <div class="grafico-container">
             <canvas id="graficoEvolucaoTrimestres"></canvas>
           </div>
         </article>
 
         <article class="grafico-card" id="cardGraficoFaltas">
-          <div class="grafico-cabecalho">
-            <h2 class="grafico-titulo">Faltas por trimestre</h2>
-            <span id="estadoFaltas" class="badge-perigo escondido">Perigo</span>
-          </div>
+          <header class="grafico-header">
+            <div class="grafico-icone" aria-hidden="true">📅</div>
+            <div class="grafico-header-texto">
+              <h2 class="grafico-titulo">Faltas por trimestre</h2>
+              <p class="grafico-subtitulo">Total somado entre todas as disciplinas</p>
+            </div>
+            <span id="estadoFaltas" class="badge-perigo escondido">
+              <span class="badge-pulso" aria-hidden="true"></span>
+              Perigo
+            </span>
+          </header>
           <div class="grafico-container">
             <canvas id="graficoFaltasTrimestres"></canvas>
           </div>
         </article>
 
       </section>
-
-      <!-- TABELA DE NOTAS -->
-      <section class="tabela-area">
-        <div class="tabela-cabecalho">
-          <h2>Notas por Disciplina</h2>
-          <button id="botao-alterar" class="botao-alterar">Alterar dados</button>
-        </div>
-        <div class="tabela-wrapper">
-          <table class="boletim">
-            <thead>
-              <tr>
-                <th>Disciplina</th>
-                <th>1º Tri</th>
-                <th>2º Tri</th>
-                <th>3º Tri</th>
-                <th>Média</th>
-                <th>Faltas</th>
-                <th>Situação</th>
-              </tr>
-            </thead>
-            <tbody id="corpo-tabela">
-              <!-- As linhas serão preenchidas pelo JavaScript -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- ÁREA DE EDIÇÃO (escondida até clicar em Alterar dados) -->
-        <div id="area-edicao" class="area-edicao escondido">
-          <h3>Editar notas e faltas</h3>
-          <p class="edicao-aviso">Notas: aceita valores de 0 a 10 (ex.: 7, 7,5, 8.2) ou vazio. Faltas: número inteiro maior ou igual a 0.</p>
-          <div id="campos-edicao" class="campos-edicao">
-            <!-- Campos serão gerados pelo JavaScript -->
-          </div>
-          <div class="edicao-botoes">
-            <button id="botao-salvar" class="botao-salvar">Salvar alterações</button>
-            <button id="botao-cancelar" class="botao-cancelar">Cancelar</button>
-          </div>
-          <p id="mensagem-edicao" class="mensagem-edicao"></p>
-        </div>
-      </section>
-
-    </div>
-
-  </main>
-
-  <footer class="rodape">
-    <p>Projeto escolar — dados fictícios para demonstração.</p>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
