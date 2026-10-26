@@ -1,466 +1,111 @@
-/* ===== CORES PRINCIPAIS ===== */
-:root {
-  --azul-escuro: #1e3a8a;
-  --azul-claro: #e0ecff;
-  --cinza-texto: #374151;
-  --cinza-borda: #d1d5db;
-  --branco: #ffffff;
-  --verde-bom: #166534;
-  --amarelo-atencao: #b45309;
-  --cinza-neutro: #6b7280;
-}
-
-/* ===== RESET BÁSICO ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f9fafb;
-  color: var(--cinza-texto);
-  line-height: 1.5;
-}
-
-/* ===== CABEÇALHO ===== */
-.cabecalho {
-  background-color: var(--azul-escuro);
-  color: var(--branco);
-  text-align: center;
-  padding: 24px 16px;
-}
-
-.cabecalho h1 {
-  font-size: 1.8rem;
-  margin-bottom: 6px;
-}
-
-.subtitulo {
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-/* ===== CONTAINER PRINCIPAL ===== */
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 20px 16px 40px;
-}
-
-/* ===== CARDS DE RESUMO ===== */
-.cards {
+/* ===== ÁREA DE GRÁFICOS ===== */
+.area-graficos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
   margin-bottom: 32px;
 }
 
-.card {
+.grafico-card {
   background-color: var(--branco);
   border: 1px solid var(--azul-claro);
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 2px 6px rgba(30, 58, 138, 0.08);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card .icone {
-  font-size: 1.6rem;
-  margin-bottom: 6px;
-  display: block;
-}
-
-.card .titulo-card {
-  font-size: 0.85rem;
-  color: var(--cinza-neutro);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-}
-
-.card .valor-card {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--azul-escuro);
-}
-
-/* ===== TABELA ===== */
-.tabela-area h2 {
-  font-size: 1.2rem;
-  margin-bottom: 12px;
-  color: var(--azul-escuro);
-}
-
-.tabela-cabecalho {
+.grafico-cabecalho {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 12px;
 }
 
-.tabela-cabecalho h2 {
+.grafico-titulo {
+  font-size: 0.95rem;
+  color: var(--azul-escuro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 10px;
+}
+
+.grafico-cabecalho .grafico-titulo {
   margin-bottom: 0;
 }
 
-.tabela-wrapper {
-  overflow-x: auto;
-  background-color: var(--branco);
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(30, 58, 138, 0.08);
-}
-
-table.boletim {
+.grafico-container {
+  position: relative;
   width: 100%;
-  border-collapse: collapse;
-  min-width: 700px;
+  height: 220px;
+  min-width: 0;
 }
 
-table.boletim th,
-table.boletim td {
-  padding: 12px 10px;
-  text-align: center;
-  border-bottom: 1px solid var(--cinza-borda);
-  font-size: 0.9rem;
+.grafico-container-alto {
+  height: 420px;
 }
 
-table.boletim th {
-  background-color: var(--azul-claro);
-  color: var(--azul-escuro);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-
-table.boletim td:first-child,
-table.boletim th:first-child {
-  text-align: left;
-  font-weight: 600;
-}
-
-table.boletim tr:last-child td {
-  border-bottom: none;
-}
-
-table.boletim tr:nth-child(even) td {
-  background-color: #fbfcff;
-}
-
-.situacao-bom {
-  color: var(--verde-bom);
-  font-weight: 600;
-}
-
-.situacao-atencao {
-  color: var(--amarelo-atencao);
-  font-weight: 600;
-}
-
-.situacao-neutra {
-  color: var(--cinza-neutro);
-  font-style: italic;
-}
-
-/* ===== RODAPÉ ===== */
-.rodape {
-  text-align: center;
-  padding: 16px;
-  font-size: 0.8rem;
-  color: var(--cinza-neutro);
-  border-top: 1px solid var(--cinza-borda);
-}
-
-/* ===== AJUSTES PARA CELULAR ===== */
-@media (max-width: 600px) {
-  .cabecalho h1 {
-    font-size: 1.4rem;
-  }
-
-  .card .valor-card {
-    font-size: 1.25rem;
-  }
-
-  table.boletim th,
-  table.boletim td {
-    padding: 10px 8px;
-    font-size: 0.82rem;
-  }
-}
-
-/* ===== TELA DE ACESSO POR PIN ===== */
-.acesso {
-  background-color: var(--branco);
-  border: 1px solid var(--azul-claro);
-  border-radius: 12px;
-  padding: 24px;
-  max-width: 420px;
-  margin: 0 auto 32px;
-  box-shadow: 0 2px 6px rgba(30, 58, 138, 0.08);
-  text-align: center;
-}
-
-.acesso h2 {
-  color: var(--azul-escuro);
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-.acesso-info {
-  font-size: 0.9rem;
-  color: var(--cinza-neutro);
-  margin-bottom: 18px;
-}
-
-.acesso-campo {
-  text-align: left;
-  margin-bottom: 14px;
-}
-
-.acesso-campo label {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--cinza-texto);
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-
-.acesso-campo input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--cinza-borda);
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: inherit;
-  color: var(--cinza-texto);
-}
-
-.acesso-campo input:focus {
-  outline: none;
-  border-color: var(--azul-escuro);
-}
-
-.botao-entrar {
-  width: 100%;
-  padding: 12px;
-  background-color: var(--azul-escuro);
+/* Badge Perigo */
+.badge-perigo {
+  display: inline-block;
+  background-color: #b91c1c;
   color: var(--branco);
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.botao-entrar:hover {
-  background-color: #172f6e;
-}
-
-.botao-entrar:disabled {
-  background-color: var(--cinza-neutro);
-  cursor: not-allowed;
-}
-
-.mensagem-acesso {
-  margin-top: 12px;
-  font-size: 0.9rem;
-  min-height: 20px;
-}
-
-.mensagem-acesso.erro {
-  color: #b91c1c;
-}
-
-.mensagem-acesso.ok {
-  color: var(--verde-bom);
-}
-
-/* ===== ÁREA DO BOLETIM ===== */
-.area-boletim {
-  transition: opacity 0.2s ease;
-}
-
-.escondido {
-  display: none;
-}
-
-/* ===== BOTÃO ALTERAR ===== */
-.botao-alterar {
-  padding: 10px 18px;
-  background-color: var(--azul-claro);
-  color: var(--azul-escuro);
-  border: 1px solid var(--azul-escuro);
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.botao-alterar:hover {
-  background-color: var(--azul-escuro);
-  color: var(--branco);
-}
-
-/* ===== ÁREA DE EDIÇÃO ===== */
-.area-edicao {
-  margin-top: 24px;
-  background-color: var(--branco);
-  border: 1px solid var(--azul-claro);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(30, 58, 138, 0.08);
-}
-
-.area-edicao h3 {
-  color: var(--azul-escuro);
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-}
-
-.edicao-aviso {
-  font-size: 0.82rem;
-  color: var(--cinza-neutro);
-  margin-bottom: 16px;
-}
-
-.campos-edicao {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.disciplina-edicao {
-  border: 1px solid var(--cinza-borda);
-  border-radius: 10px;
-  padding: 12px;
-  background-color: #fbfcff;
-}
-
-.disciplina-edicao .nome-disciplina {
+  font-size: 0.72rem;
   font-weight: 700;
-  color: var(--azul-escuro);
-  font-size: 0.95rem;
-  margin-bottom: 10px;
-  display: block;
-}
-
-.linha-edicao {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.campo-edicao {
-  display: flex;
-  flex-direction: column;
-}
-
-.campo-edicao label {
-  font-size: 0.75rem;
-  color: var(--cinza-neutro);
-  margin-bottom: 3px;
-  font-weight: 600;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
-.campo-edicao input {
-  padding: 8px 10px;
-  border: 1px solid var(--cinza-borda);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-family: inherit;
-  color: var(--cinza-texto);
-  width: 100%;
-}
-
-.campo-edicao input:focus {
-  outline: none;
-  border-color: var(--azul-escuro);
-}
-
-.campo-edicao input.invalido {
+/* Card de faltas em estado crítico */
+.grafico-card.critico {
   border-color: #b91c1c;
-  background-color: #fef2f2;
+  box-shadow: 0 2px 10px rgba(185, 28, 28, 0.25);
 }
 
-.edicao-botoes {
-  display: flex;
-  gap: 10px;
-  margin-top: 18px;
-  flex-wrap: wrap;
+/* ===== RESPONSIVIDADE DOS GRÁFICOS ===== */
+@media (max-width: 900px) {
+  .area-graficos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grafico-container-alto {
+    height: 380px;
+  }
+
+  /* O terceiro card (faltas) ocupa a linha inteira abaixo */
+  .area-graficos .grafico-card:nth-child(3) {
+    grid-column: 1 / -1;
+  }
 }
 
-.botao-salvar {
-  padding: 12px 22px;
-  background-color: var(--azul-escuro);
-  color: var(--branco);
-  border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.botao-salvar:hover {
-  background-color: #172f6e;
-}
-
-.botao-salvar:disabled {
-  background-color: var(--cinza-neutro);
-  cursor: not-allowed;
-}
-
-.botao-cancelar {
-  padding: 12px 22px;
-  background-color: var(--branco);
-  color: var(--cinza-texto);
-  border: 1px solid var(--cinza-borda);
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.botao-cancelar:hover {
-  background-color: #f3f4f6;
-}
-
-.mensagem-edicao {
-  margin-top: 12px;
-  font-size: 0.9rem;
-  min-height: 20px;
-}
-
-.mensagem-edicao.erro {
-  color: #b91c1c;
-}
-
-.mensagem-edicao.ok {
-  color: var(--verde-bom);
-}
-
-/* ===== AJUSTES PARA CELULAR (EDIÇÃO) ===== */
 @media (max-width: 600px) {
-  .linha-edicao {
-    grid-template-columns: repeat(2, 1fr);
+  .area-graficos {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 
-  .tabela-cabecalho {
-    flex-direction: column;
-    align-items: flex-start;
+  .grafico-container {
+    height: 220px;
   }
 
-  .botao-alterar {
-    width: 100%;
+  .grafico-container-alto {
+    height: 460px;
   }
 
-  .edicao-botoes button {
-    flex: 1;
+  .grafico-card {
+    padding: 14px;
+  }
+
+  .grafico-titulo {
+    font-size: 0.9rem;
   }
 }
