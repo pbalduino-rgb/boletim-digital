@@ -932,3 +932,140 @@ function atualizarGraficoEvolucao() {
           min: 0,
           max: 10,
           ticks: { color: CORES_GRAFICOS.texto, font
+                      ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 }, stepSize: 2 },
+          grid: { color: CORES_GRAFICOS.grade, drawBorder: false },
+          border: { display: false }
+        }
+      }
+    }
+  });
+}
+
+// ------------------------------------------------------
+// GRÁFICO 3 — Faltas por trimestre
+// ------------------------------------------------------
+function atualizarGraficoFaltas() {
+  const canvas = document.getElementById("graficoFaltasTrimestres");
+  if (!canvas || typeof Chart === "undefined") return;
+
+  if (graficoFaltas) {
+    graficoFaltas.destroy();
+    graficoFaltas = null;
+  }
+
+  const { labels, valores, totalFaltas } = calcularDadosFaltasPorTrimestre();
+
+  // Avaliação interna de risco (NÃO exibir a referência)
+  const emPerigo = totalFaltas >= REFERENCIA_INTERNA_FALTAS;
+
+  const badge = document.getElementById("estadoFaltas");
+  const card = document.getElementById("cardGraficoFaltas");
+  if (badge) {
+    if (emPerigo) badge.classList.remove("escondido");
+    else badge.classList.add("escondido");
+  }
+  if (card) {
+    if (emPerigo) card.classList.add("critico");
+    else card.classList.remove("critico");
+  }
+
+  graficoFaltas = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Faltas",
+        data: valores,
+        backgroundColor: (context) => {
+          const { chart } = context;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return CORES_GRAFICOS.azulMedio;
+          return criarGradienteVertical(
+            c,
+            chartArea,
+            CORES_GRAFICOS.azulGradienteInicio,
+            CORES_GRAFICOS.azulGradienteFim
+          );
+        },
+        borderColor: "rgba(30, 58, 138, 0.35)",
+        borderWidth: 1,
+        borderRadius: 6,
+        borderSkipped: false,
+        barPercentage: 0.7,
+        categoryPercentage: 0.8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 450, easing: "easeOutQuart" },
+      layout: { padding: { top: 8 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          ...tooltipPremium(),
+          callbacks: {
+            title: (items) => items[0].label,
+            label: (context) => context.parsed.y + " faltas"
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: CORES_GRAFICOS.texto, font: { size: 12, weight: "600" } },
+          grid: { display: false },
+          border: { display: false }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { color: CORES_GRAFICOS.texto, font: { size: 11 }, precision: 0 },
+          grid: { color: CORES_GRAFICOS.grade, drawBorder: false },
+          border: { display: false }
+        }
+      }
+    }
+  });
+}
+
+// ------------------------------------------------------
+// Atualiza todos os gráficos (somente leitura)
+// ------------------------------------------------------
+function atualizarGraficos() {
+  atualizarGraficoMedias();
+  atualizarGraficoEvolucao();
+  atualizarGraficoFaltas();
+}
+
+// ======================================================
+// INICIALIZAÇÃO
+// ======================================================
+document.addEventListener("DOMContentLoaded", () => {
+  const botaoEntrar = document.getElementById("botao-entrar");
+  if (botaoEntrar) botaoEntrar.addEventListener("click", entrar);
+
+  const campoPin = document.getElementById("campo-pin");
+  if (campoPin) {
+    campoPin.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") entrar();
+    });
+  }
+
+  const botaoAlterar = document.getElementById("botao-alterar");
+  if (botaoAlterar) {
+    botaoAlterar.addEventListener("click", () => {
+      if (modoEdicao) fecharEdicao();
+      else abrirEdicao();
+    });
+  }
+
+  const botaoSalvar = document.getElementById("botao-salvar");
+  if (botaoSalvar) botaoSalvar.addEventListener("click", salvar);
+
+  const botaoCancelar = document.getElementById("botao-cancelar");
+  if (botaoCancelar) {
+    botaoCancelar.addEventListener("click", () => {
+      mostrarMensagemEdicao("", "");
+      fecharEdicao();
+    });
+  }
+});
